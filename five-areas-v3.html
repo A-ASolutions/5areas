@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<title>Five Aspects — Meaningful Path</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+
+/* ═══════════════════════════════════════════════════════════════
+   THEMES
+═══════════════════════════════════════════════════════════════ */
+
+/* ── Clinical / Paper (default) ── */
+:root, [data-theme="paper"] {
+  --bg:      #f2ede4;
+  --cvs:     #ebe5db;
+  --card:    #fffef9;
+  --tb:      rgba(251,247,240,0.97);
+  --line:    rgba(0,0,0,0.09);
+  --fg:      #18130d;
+  --fg2:     #3a3028;
+  --muted:   #8c7a6a;
+  --shadow:  0 2px 18px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.05);
+  --dot:     rgba(0,0,0,0.042);
+  --ta-bg:   rgba(0,0,0,0.022);
+  --ta-brd:  rgba(0,0,0,0.08);
+  --tb-title:#4a6fa5;
+  --sch:     light;
+  --c-sit:   #4a6fa5;
+  --c-tho:   #2e7d6e;
+  --c-emo:   #b85c00;
+  --c-bod:   #7b3fa0;
+  --c-beh:   #2e6b35;
+}
+
+/* ── Botanical / Sage ── */
+[data-theme="sage"] {
+  --bg:      #dfe8df;
+  --cvs:     #d5dfcf;
+  --card:    #f4f6ef;
+  --tb:      rgba(224,232,218,0.97);
+  --line:    rgba(30,70,30,0.1);
+  --fg:      #1a2618;
+  --fg2:     #2e3e2c;
+  --muted:   #607858;
+  --shadow:  0 2px 18px rgba(20,60,20,0.09);
+  --dot:     rgba(30,80,30,0.05);
+  --ta-bg:   rgba(30,80,30,0.03);
+  --ta-brd:  rgba(30,80,30,0.1);
+  --tb-title:#3a6840;
+  --sch:     light;
+  --c-sit:   #2d6a4f;
+  --c-tho:   #1e6091;
+  --c-emo:   #a04b1a;
+  --c-bod:   #6a3580;
+  --c-beh:   #3d6b30;
+}
+
+/* ── Midnight Constellation ── */
+[data-theme="midnight"] {
+  --bg:      #080818;
+  --cvs:     #0b0b20;
+  --card:    rgba(14,14,34,0.98);
+  --tb:      rgba(6,6,18,0.97);
+  --line:    rgba(140,150,255,0.1);
+  --fg:      #e4e8ff;
+  --fg2:     #c8ccf0;
+  --muted:   #5c6090;
+  --shadow:  0 6px 30px rgba(0,0,0,0.7), 0 0 0 1px rgba(140,150,255,0.06);
+  --dot:     rgba(120,130,255,0.055);
+  --ta-bg:   rgba(140,150,255,0.04);
+  --ta-brd:  rgba(140,150,255,0.1);
+  --tb-title:#8899ee;
+  --sch:     dark;
+  --c-sit:   #7090ff;
+  --c-tho:   #38d4f0;
+  --c-emo:   #f0c040;
+  --c-bod:   #c070ff;
+  --c-beh:   #40e090;
+}
+
+/* ── Ember ── */
+[data-theme="ember"] {
+  --bg:      #1a1008;
+  --cvs:     #1e1408;
+  --card:    rgba(28,18,8,0.98);
+  --tb:      rgba(16,10,4,0.97);
+  --line:    rgba(255,180,60,0.1);
+  --fg:      #f4e8d0;
+  --fg2:     #e0d0b4;
+  --muted:   #8a6840;
+  --shadow:  0 6px 30px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,180,60,0.06);
+  --dot:     rgba(255,180,60,0.045);
+  --ta-bg:   rgba(255,180,60,0.03);
+  --ta-brd:  rgba(255,180,60,0.09);
+  --tb-title:#d4904a;
+  --sch:     dark;
+  --c-sit:   #e8a030;
+  --c-tho:   #40c8c0;
+  --c-emo:   #f07060;
+  --c-bod:   #b878f0;
+  --c-beh:   #70d870;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BASE
+═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;}
+html,body{
+  margin:0;padding:0;height:100%;overflow:hidden;
+  background:var(--bg);color:var(--fg);
+  font-family:'DM Sans',system-ui,sans-serif;
+  -webkit-tap-highlight-color:transparent;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   TOOLBAR
+═══════════════════════════════════════════════════════════════ */
+#tb{
+  position:fixed;top:0;left:0;right:0;height:50px;z-index:100;
+  background:var(--tb);border-bottom:1px solid var(--line);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  display:flex;align-items:center;gap:7px;padding:0 14px;
+  box-shadow:0 2px 14px rgba(0,0,0,0.07);
+}
+.tb-title{
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-size:1.14rem;font-weight:500;font-style:italic;
+  color:var(--tb-title);letter-spacing:0.04em;white-space:nowrap;
+}
+.tb-sub{font-size:0.65rem;color:var(--muted);letter-spacing:0.06em;text-transform:uppercase;}
+.tb-sep{width:1px;height:20px;background:var(--line);flex-shrink:0;margin:0 2px;}
+.tb-f{display:flex;align-items:center;gap:5px;}
+.tb-lbl{font-size:0.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.09em;white-space:nowrap;}
+.tbi{
+  background:var(--ta-bg);border:1px solid var(--line);
+  border-radius:7px;color:var(--fg);
+  font-family:'DM Sans',system-ui,sans-serif;
+  font-size:0.79rem;padding:4px 8px;outline:none;width:118px;
+  transition:border-color 0.2s;color-scheme:var(--sch);
+}
+.tbi:focus{border-color:var(--c-sit);}
+.tbi[type="date"]{width:128px;}
+.tbg{flex:1;}
+
+/* Draw mode toggle — the key UX change */
+#btn-draw{
+  display:flex;align-items:center;gap:6px;
+  background:var(--ta-bg);border:1px solid var(--line);
+  color:var(--muted);border-radius:8px;
+  font-family:'DM Sans',system-ui,sans-serif;
+  font-size:0.76rem;padding:5px 11px;cursor:pointer;
+  transition:all 0.2s;white-space:nowrap;font-weight:500;
+}
+#btn-draw:hover{color:var(--fg);}
+#btn-draw.active{
+  background:color-mix(in srgb,var(--c-sit) 14%,transparent);
+  border-color:color-mix(in srgb,var(--c-sit) 36%,transparent);
+  color:var(--c-sit);
+}
+#btn-draw svg{flex-shrink:0;}
+
+.tbb{
+  background:var(--ta-bg);border:1px solid var(--line);
+  color:var(--muted);border-radius:7px;
+  font-family:'DM Sans',system-ui,sans-serif;
+  font-size:0.73rem;padding:4px 9px;cursor:pointer;
+  transition:color 0.18s,background 0.18s;white-space:nowrap;
+  display:flex;align-items:center;gap:4px;
+}
+.tbb:hover{color:var(--fg);background:var(--line);}
+.tbb.pri{
+  background:color-mix(in srgb,var(--c-sit) 14%,transparent);
+  border-color:color-mix(in srgb,var(--c-sit) 34%,transparent);
+  color:var(--c-sit);font-weight:500;
+}
+.tbb.pri:hover{background:color-mix(in srgb,var(--c-sit) 22%,transparent);}
+
+/* Theme dots */
+.td{
+  width:18px;height:18px;border-radius:50%;cursor:pointer;
+  border:2px solid transparent;transition:transform 0.15s,border-color 0.15s;
+  flex-shrink:0;
+}
+.td:hover{transform:scale(1.2);}
+.td.on{border-color:var(--fg);transform:scale(1.26);}
+
+/* ═══════════════════════════════════════════════════════════════
+   CANVAS
+═══════════════════════════════════════════════════════════════ */
+#cw{position:fixed;inset:50px 0 0 0;overflow:hidden;}
+#cvs{
+  position:absolute;inset:0;
+  background-color:var(--cvs);
+  background-image:radial-gradient(circle,var(--dot) 1px,transparent 1px);
+  background-size:26px 26px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SVG WIRES
+═══════════════════════════════════════════════════════════════ */
+#wires{
+  position:absolute;inset:0;width:100%;height:100%;
+  pointer-events:none;overflow:visible;z-index:1;
+}
+.wire{
+  fill:none;stroke-width:2.4;stroke-linecap:round;
+  pointer-events:stroke;cursor:pointer;
+  transition:stroke-width 0.15s,filter 0.15s;
+}
+.wire:hover,.wire.sel{stroke-width:3.6;}
+[data-theme="midnight"] .wire,
+[data-theme="ember"] .wire { filter:drop-shadow(0 0 3px currentColor); }
+[data-theme="midnight"] .wire:hover,
+[data-theme="midnight"] .wire.sel,
+[data-theme="ember"] .wire:hover,
+[data-theme="ember"] .wire.sel { filter:drop-shadow(0 0 6px currentColor); }
+
+#lw{
+  fill:none;stroke-width:2.2;stroke-dasharray:8,5;stroke-linecap:round;
+  pointer-events:none;display:none;opacity:0.7;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CARDS
+═══════════════════════════════════════════════════════════════ */
+.ac{
+  position:absolute;min-width:210px;min-height:170px;
+  background:var(--card);border:1px solid var(--line);
+  border-left:4px solid var(--ca);  /* ← left accent bar */
+  border-radius:14px;
+  display:flex;flex-direction:column;
+  box-shadow:var(--shadow);
+  transition:box-shadow 0.2s,transform 0.1s;
+  z-index:10;overflow:hidden;
+  user-select:none;-webkit-user-select:none;
+}
+.ac.drag-on{
+  box-shadow:0 18px 48px rgba(0,0,0,0.22),0 0 0 2px var(--ca);
+  transform:scale(1.012);z-index:50;transition:none;
+}
+.ac.ct{
+  box-shadow:0 0 0 3px var(--ca),var(--shadow);
+}
+/* Per-card colours */
+#c-sit{--ca:var(--c-sit);}
+#c-tho{--ca:var(--c-tho);}
+#c-emo{--ca:var(--c-emo);}
+#c-bod{--ca:var(--c-bod);}
+#c-beh{--ca:var(--c-beh);}
+
+/* Header drag zone */
+.ach{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:12px 13px 9px 14px;
+  cursor:grab;border-bottom:1px solid var(--line);flex-shrink:0;
+}
+.ach:active{cursor:grabbing;}
+
+.ac-ico{
+  font-size:1.35rem;line-height:1;flex-shrink:0;margin-top:1px;
+}
+.ac-meta{flex:1;min-width:0;}
+.ac-name{
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-size:1.3rem;font-weight:600;color:var(--ca);
+  line-height:1.1;letter-spacing:0.01em;
+}
+.ac-sub{
+  font-size:0.68rem;color:var(--muted);
+  text-transform:uppercase;letter-spacing:0.09em;margin-top:2px;
+}
+
+/* Body */
+.acb{
+  flex:1;display:flex;flex-direction:column;
+  padding:10px 12px 24px 14px;gap:7px;overflow:hidden;
+}
+.ac-q{
+  font-size:0.8rem;color:var(--fg2);line-height:1.52;
+  font-weight:300;flex-shrink:0;
+}
+.ac-ta{
+  flex:1;min-height:0;
+  background:var(--ta-bg);border:1px solid var(--ta-brd);border-radius:9px;
+  color:var(--fg);font-family:'DM Sans',system-ui,sans-serif;
+  font-size:0.88rem;font-weight:300;line-height:1.58;
+  padding:8px 10px;resize:none;outline:none;
+  transition:border-color 0.2s;
+  user-select:text;-webkit-user-select:text;
+}
+.ac-ta:focus{border-color:color-mix(in srgb,var(--ca) 45%,transparent);}
+.ac-ta::placeholder{color:var(--muted);opacity:0.55;}
+
+/* ═══════════════════════════════════════════════════════════════
+   RESIZE HANDLE — ONLY visible in normal mode (no draw mode)
+   Only one handle: SE corner, impossible to confuse with ports
+═══════════════════════════════════════════════════════════════ */
+.rz{
+  position:absolute;bottom:4px;right:4px;
+  width:18px;height:18px;cursor:nwse-resize;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--muted);opacity:0;z-index:30;
+  transition:opacity 0.18s;pointer-events:auto;
+}
+/* Show only when NOT in draw mode */
+body:not(.drawmode) .ac:hover .rz{opacity:0.55;}
+body:not(.drawmode) .rz:hover{opacity:1!important;}
+body.drawmode .rz{pointer-events:none!important;opacity:0!important;}
+
+/* ═══════════════════════════════════════════════════════════════
+   PORTS — ONLY visible in draw mode
+   Four midpoints, nothing near the resize corner
+═══════════════════════════════════════════════════════════════ */
+.pt{
+  position:absolute;z-index:25;
+  width:15px;height:15px;border-radius:50%;
+  background:var(--ca);border:2.5px solid var(--card);
+  cursor:crosshair;opacity:0;
+  transition:opacity 0.2s,transform 0.15s,box-shadow 0.15s;
+  pointer-events:none;
+}
+/* Only active in draw mode */
+body.drawmode .ac:hover .pt       { opacity:0.65; pointer-events:auto; }
+body.drawmode .pt:hover            { opacity:1!important; transform:scale(1.55)!important; box-shadow:0 0 10px var(--ca); }
+body.drawmode .ac.cs .pt          { opacity:0; pointer-events:none; }
+body.drawmode .ac.ct .pt          { opacity:1; }
+
+/* Port positions — midpoints only, far from corners */
+.pt-top   {top:-7px;  left:50%;transform:translateX(-50%);}
+.pt-right {right:-7px;top:50%; transform:translateY(-50%);}
+.pt-bottom{bottom:-7px;left:50%;transform:translateX(-50%);}
+.pt-left  {left:-7px; top:50%; transform:translateY(-50%);}
+
+.pt-top:hover   {transform:translateX(-50%)  scale(1.55)!important;}
+.pt-right:hover {transform:translateY(-50%)  scale(1.55)!important;}
+.pt-bottom:hover{transform:translateX(-50%)  scale(1.55)!important;}
+.pt-left:hover  {transform:translateY(-50%)  scale(1.55)!important;}
+
+/* ═══════════════════════════════════════════════════════════════
+   DRAW MODE cursor cue
+═══════════════════════════════════════════════════════════════ */
+body.drawmode #cvs { cursor:crosshair; }
+body.drawmode .ac  { cursor:default; }
+body.drawmode .ach { cursor:default; }
+
+/* ═══════════════════════════════════════════════════════════════
+   NOTIFICATIONS
+═══════════════════════════════════════════════════════════════ */
+#mode-bar{
+  position:fixed;top:58px;left:50%;transform:translateX(-50%);
+  background:color-mix(in srgb,var(--c-sit) 14%,var(--card));
+  border:1px solid color-mix(in srgb,var(--c-sit) 34%,transparent);
+  border-radius:99px;padding:5px 15px;font-size:0.73rem;
+  color:var(--c-sit);font-weight:500;
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  pointer-events:none;z-index:200;
+  opacity:0;transition:opacity 0.3s ease;white-space:nowrap;
+}
+#mode-bar.on{opacity:1;}
+
+#dh{
+  position:fixed;bottom:46px;left:50%;transform:translateX(-50%);
+  background:rgba(200,60,60,0.09);border:1px solid rgba(200,60,60,0.22);
+  border-radius:99px;padding:5px 13px;font-size:0.7rem;
+  color:rgba(200,80,80,0.9);pointer-events:none;z-index:200;
+  opacity:0;transition:opacity 0.25s;white-space:nowrap;
+}
+#dh.on{opacity:1;}
+
+.tst{
+  position:fixed;bottom:18px;left:50%;transform:translateX(-50%);
+  background:var(--card);border:1px solid var(--line);border-radius:9px;
+  padding:7px 14px;font-size:0.78rem;color:var(--fg);z-index:9999;
+  box-shadow:var(--shadow);animation:tsti 0.2s ease;
+}
+@keyframes tsti{from{opacity:0;transform:translateX(-50%) translateY(7px);}to{opacity:1;transform:translateX(-50%) translateY(0);}}
+
+.credit{
+  position:fixed;bottom:8px;right:12px;z-index:5;pointer-events:none;
+  font-size:0.6rem;color:var(--muted);opacity:0.32;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PRINT
+═══════════════════════════════════════════════════════════════ */
+@media print{
+  #tb,#mode-bar,#dh,.credit,.pt,.rz{display:none!important;}
+  #cw{inset:0!important;}
+  #cvs{background:#fff!important;background-image:none!important;}
+  .ac{box-shadow:0 0 0 1px #ccc!important;background:#fff!important;
+    border-left-width:4px!important;overflow:visible!important;}
+  .ac-ta{background:#f9f9f9!important;color:#111!important;border-color:#ddd!important;}
+}
+</style>
+</head>
+<body data-theme="paper">
+
+<!-- ══════════════════════ TOOLBAR ═══════════════════════════════ -->
+<div id="tb">
+  <div>
+    <div class="tb-title">Five Aspects</div>
+  </div>
+  <div class="tb-sep"></div>
+  <div class="tb-f"><span class="tb-lbl">Client</span>
+    <input id="ic" class="tbi" type="text" placeholder="Full name" autocomplete="off"/></div>
+  <div class="tb-f"><span class="tb-lbl">Date</span>
+    <input id="id" class="tbi" type="date"/></div>
+  <div class="tb-f"><span class="tb-lbl">Therapist</span>
+    <input id="ith" class="tbi" type="text" placeholder="Name" autocomplete="off"/></div>
+  <div class="tbg"></div>
+
+  <!-- Draw mode button — clearly labelled, toggleable -->
+  <button id="btn-draw" title="Toggle arrow-drawing mode">
+    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <path d="M5 12h14M15 6l6 6-6 6"/></svg>
+    Draw Arrows
+  </button>
+
+  <div class="tb-sep"></div>
+
+  <!-- Theme picker -->
+  <div class="tb-f"><span class="tb-lbl">Theme</span></div>
+  <div style="display:flex;gap:4px;">
+    <div class="td on"  data-t="paper"    title="Clinical Paper"
+         style="background:linear-gradient(135deg,#f2ede4,#ddd5c8)"></div>
+    <div class="td"     data-t="sage"     title="Botanical Sage"
+         style="background:linear-gradient(135deg,#dfe8df,#b8ccb4)"></div>
+    <div class="td"     data-t="midnight" title="Midnight Constellation"
+         style="background:linear-gradient(135deg,#0b0b22,#181838)"></div>
+    <div class="td"     data-t="ember"    title="Ember"
+         style="background:linear-gradient(135deg,#2a1808,#1a1008)"></div>
+  </div>
+
+  <div class="tb-sep"></div>
+  <button class="tbb" id="brl">Reset</button>
+  <button class="tbb" id="bca">Clear arrows</button>
+  <button class="tbb" id="bs">Save</button>
+  <button class="tbb" id="bl">Load</button>
+  <button class="tbb pri" id="bp">
+    <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <polyline points="6 9 6 2 18 2 18 9"/>
+      <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+      <rect x="6" y="14" width="12" height="8"/>
+    </svg>
+    Print / PDF
+  </button>
+</div>
+
+<!-- ══════════════════════ CANVAS ════════════════════════════════ -->
+<div id="cw"><div id="cvs">
+
+  <svg id="wires" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="arr" viewBox="0 0 12 12" refX="11" refY="6"
+              markerWidth="6" markerHeight="6" orient="auto">
+        <path d="M 0 1.5 L 10 6 L 0 10.5 Q 3 6 0 1.5 Z" fill="currentColor"/>
+      </marker>
+      <marker id="arrs" viewBox="0 0 12 12" refX="1" refY="6"
+              markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1.5 L 10 6 L 0 10.5 Q 3 6 0 1.5 Z" fill="currentColor"/>
+      </marker>
+    </defs>
+    <path id="lw" d=""/>
+  </svg>
+
+  <!-- ─── Situation ─── -->
+  <div class="ac" id="c-sit">
+    <div class="ach">
+      <span class="ac-ico">📍</span>
+      <div class="ac-meta">
+        <div class="ac-name">Situation</div>
+        <div class="ac-sub">Padesky 5 Aspects · Area 1</div>
+      </div>
+    </div>
+    <div class="acb">
+      <div class="ac-q">Where? When? Who with? What happened? How?</div>
+      <textarea class="ac-ta" placeholder="Describe the situation briefly…"></textarea>
+    </div>
+    <div class="pt pt-top" data-s="top"></div>
+    <div class="pt pt-right" data-s="right"></div>
+    <div class="pt pt-bottom" data-s="bottom"></div>
+    <div class="pt pt-left" data-s="left"></div>
+    <div class="rz"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><line x1="3" y1="9" x2="9" y2="9"/><line x1="9" y1="3" x2="9" y2="9"/><line x1="5" y1="9" x2="9" y2="5"/></svg></div>
+  </div>
+
+  <!-- ─── Thoughts & Images ─── -->
+  <div class="ac" id="c-tho">
+    <div class="ach">
+      <span class="ac-ico">💭</span>
+      <div class="ac-meta">
+        <div class="ac-name">Thoughts &amp; Images</div>
+        <div class="ac-sub">Area 2 · Cognitive</div>
+      </div>
+    </div>
+    <div class="acb">
+      <div class="ac-q">What went through my mind? What disturbed me? If I had those thoughts or images — what did that say about me or the situation?</div>
+      <textarea class="ac-ta" placeholder="Automatic thoughts, meanings, predictions, images…"></textarea>
+    </div>
+    <div class="pt pt-top" data-s="top"></div>
+    <div class="pt pt-right" data-s="right"></div>
+    <div class="pt pt-bottom" data-s="bottom"></div>
+    <div class="pt pt-left" data-s="left"></div>
+    <div class="rz"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><line x1="3" y1="9" x2="9" y2="9"/><line x1="9" y1="3" x2="9" y2="9"/><line x1="5" y1="9" x2="9" y2="5"/></svg></div>
+  </div>
+
+  <!-- ─── Moods / Emotions ─── -->
+  <div class="ac" id="c-emo">
+    <div class="ach">
+      <span class="ac-ico">🌊</span>
+      <div class="ac-meta">
+        <div class="ac-name">Moods &amp; Emotions</div>
+        <div class="ac-sub">Area 3 · Affective</div>
+      </div>
+    </div>
+    <div class="acb">
+      <div class="ac-q">What emotion did I feel at that time? What else? Rate the intensity (0–100%).</div>
+      <textarea class="ac-ta" placeholder="e.g. Anxiety 75%, Shame 50%, Sadness 40%…"></textarea>
+    </div>
+    <div class="pt pt-top" data-s="top"></div>
+    <div class="pt pt-right" data-s="right"></div>
+    <div class="pt pt-bottom" data-s="bottom"></div>
+    <div class="pt pt-left" data-s="left"></div>
+    <div class="rz"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><line x1="3" y1="9" x2="9" y2="9"/><line x1="9" y1="3" x2="9" y2="9"/><line x1="5" y1="9" x2="9" y2="5"/></svg></div>
+  </div>
+
+  <!-- ─── Body / Physical Sensations ─── -->
+  <div class="ac" id="c-bod">
+    <div class="ach">
+      <span class="ac-ico">🫀</span>
+      <div class="ac-meta">
+        <div class="ac-name">Body Sensations</div>
+        <div class="ac-sub">Area 4 · Somatic</div>
+      </div>
+    </div>
+    <div class="acb">
+      <div class="ac-q">What did I notice in my body? What did I feel? Where did I feel it?</div>
+      <textarea class="ac-ta" placeholder="Heart rate, tension, breathing, stomach, heat, cold…"></textarea>
+    </div>
+    <div class="pt pt-top" data-s="top"></div>
+    <div class="pt pt-right" data-s="right"></div>
+    <div class="pt pt-bottom" data-s="bottom"></div>
+    <div class="pt pt-left" data-s="left"></div>
+    <div class="rz"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><line x1="3" y1="9" x2="9" y2="9"/><line x1="9" y1="3" x2="9" y2="9"/><line x1="5" y1="9" x2="9" y2="5"/></svg></div>
+  </div>
+
+  <!-- ─── Behaviours ─── -->
+  <div class="ac" id="c-beh">
+    <div class="ach">
+      <span class="ac-ico">⚡</span>
+      <div class="ac-meta">
+        <div class="ac-name">Behaviours</div>
+        <div class="ac-sub">Area 5 · Behavioural</div>
+      </div>
+    </div>
+    <div class="acb">
+      <div class="ac-q">What helped me cope? What didn't I do, or what did I avoid? What automatic reactions did I have? What would others have seen me doing?</div>
+      <textarea class="ac-ta" placeholder="Actions, avoidance, safety behaviours, coping responses…"></textarea>
+    </div>
+    <div class="pt pt-top" data-s="top"></div>
+    <div class="pt pt-right" data-s="right"></div>
+    <div class="pt pt-bottom" data-s="bottom"></div>
+    <div class="pt pt-left" data-s="left"></div>
+    <div class="rz"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><line x1="3" y1="9" x2="9" y2="9"/><line x1="9" y1="3" x2="9" y2="9"/><line x1="5" y1="9" x2="9" y2="5"/></svg></div>
+  </div>
+
+</div></div>
+
+<div id="mode-bar">↔ Arrow mode — hover a card, drag from a coloured dot to connect</div>
+<div id="dh">Arrow selected — Delete to remove · double-click to label · right-click to flip direction</div>
+<div class="credit">Five Aspects · Padesky 1986 · Meaningful Path Therapy</div>
+
+<!-- ══════════════════════ SCRIPT ═════════════════════════════════ -->
+<script>
+(() => {
+'use strict';
+
+const cvs   = document.getElementById('cvs');
+const wires = document.getElementById('wires');
+const lw    = document.getElementById('lw');
+
+// ── Accent colours per theme ────────────────────────────────────────────────
+const THEME_ACCENTS = {
+  paper:    {'c-sit':'#4a6fa5','c-tho':'#2e7d6e','c-emo':'#b85c00','c-bod':'#7b3fa0','c-beh':'#2e6b35'},
+  sage:     {'c-sit':'#2d6a4f','c-tho':'#1e6091','c-emo':'#a04b1a','c-bod':'#6a3580','c-beh':'#3d6b30'},
+  midnight: {'c-sit':'#7090ff','c-tho':'#38d4f0','c-emo':'#f0c040','c-bod':'#c070ff','c-beh':'#40e090'},
+  ember:    {'c-sit':'#e8a030','c-tho':'#40c8c0','c-emo':'#f07060','c-bod':'#b878f0','c-beh':'#70d870'},
+};
+function getAccent(cardId){
+  const t = document.body.getAttribute('data-theme') || 'paper';
+  return (THEME_ACCENTS[t]||THEME_ACCENTS.paper)[cardId] || '#4a6fa5';
+}
+
+// ── Default pentagon layout ─────────────────────────────────────────────────
+// Situation top-centre, Thoughts left, Emotions right, Body bottom-left, Behaviours bottom-right
+const DLAYOUT = {
+  'c-sit':{lp:0.32, tp:0.03, w:300, h:220},
+  'c-tho':{lp:0.04, tp:0.36, w:275, h:235},
+  'c-emo':{lp:0.72, tp:0.36, w:275, h:235},
+  'c-bod':{lp:0.10, tp:0.67, w:265, h:235},
+  'c-beh':{lp:0.64, tp:0.67, w:265, h:235},
+};
+
+let conns   = [];
+let selId   = null;
+let conn    = null;
+let drawMode = false;
+let zTop    = 10;
+let rafId   = null;
+const SK    = 'fiveasp_v6';
+
+// ── Helpers ─────────────────────────────────────────────────────────────────
+const uid   = () => 'w'+Math.random().toString(36).slice(2,8);
+const cvsR  = () => cvs.getBoundingClientRect();
+
+function portPos(cardId, side){
+  const card = document.getElementById(cardId);
+  const pt   = card.querySelector('.pt-'+side);
+  const br   = cvsR(), pr = pt.getBoundingClientRect();
+  return { x: pr.left+pr.width/2-br.left, y: pr.top+pr.height/2-br.top };
+}
+
+function sv(s,d){
+  if(s==='top')    return{x:0,y:-d};
+  if(s==='bottom') return{x:0,y:d};
+  if(s==='left')   return{x:-d,y:0};
+  if(s==='right')  return{x:d,y:0};
+  return{x:0,y:0};
+}
+
+function bez(p1,s1,p2,s2){
+  const d=Math.hypot(p2.x-p1.x,p2.y-p1.y);
+  const c=Math.max(55,Math.min(220,d*0.42));
+  const v1=sv(s1,c),v2=sv(s2,c);
+  const c1={x:p1.x+v1.x,y:p1.y+v1.y},c2={x:p2.x+v2.x,y:p2.y+v2.y};
+  return `M${p1.x.toFixed(1)} ${p1.y.toFixed(1)} C${c1.x.toFixed(1)} ${c1.y.toFixed(1)},${c2.x.toFixed(1)} ${c2.y.toFixed(1)},${p2.x.toFixed(1)} ${p2.y.toFixed(1)}`;
+}
+
+function bezMid(p1,s1,p2,s2){
+  const d=Math.hypot(p2.x-p1.x,p2.y-p1.y);
+  const c=Math.max(55,Math.min(220,d*0.42));
+  const v1=sv(s1,c),v2=sv(s2,c);
+  const c1={x:p1.x+v1.x,y:p1.y+v1.y},c2={x:p2.x+v2.x,y:p2.y+v2.y};
+  const t=0.5,m=0.5;
+  return{
+    x:m*m*m*p1.x+3*m*m*t*c1.x+3*m*t*t*c2.x+t*t*t*p2.x,
+    y:m*m*m*p1.y+3*m*m*t*c1.y+3*m*t*t*c2.y+t*t*t*p2.y
+  };
+}
+
+function bestSide(fromP,toCard){
+  const br=cvsR(),cr=toCard.getBoundingClientRect();
+  const cx=(cr.left+cr.right)/2-br.left,cy=(cr.top+cr.bottom)/2-br.top;
+  const dx=cx-fromP.x,dy=cy-fromP.y;
+  return Math.abs(dx)>Math.abs(dy)?(dx>0?'left':'right'):(dy>0?'top':'bottom');
+}
+function autoSide(p1,p2){
+  const dx=p2.x-p1.x,dy=p2.y-p1.y;
+  return Math.abs(dx)>Math.abs(dy)?(dx>0?'left':'right'):(dy>0?'top':'bottom');
+}
+
+// ── Layout ───────────────────────────────────────────────────────────────────
+function applyLayout(layout){
+  Object.entries(layout).forEach(([id,pos])=>{
+    const el=document.getElementById(id); if(!el) return;
+    el.style.left=(pos.lp*100)+'%'; el.style.top=(pos.tp*100)+'%';
+    el.style.width=pos.w+'px';
+    el.style.height=pos.h?pos.h+'px':'';
+    el.style.right=''; el.style.bottom='';
+  });
+}
+function resetLayout(){ applyLayout(DLAYOUT); schedRender(); }
+
+// ── Draw mode toggle ─────────────────────────────────────────────────────────
+function setDrawMode(on){
+  drawMode = on;
+  document.body.classList.toggle('drawmode', on);
+  document.getElementById('btn-draw').classList.toggle('active', on);
+  document.getElementById('mode-bar').classList.toggle('on', on);
+  if(!on && conn){
+    conn=null; lw.style.display='none';
+    document.querySelectorAll('.ac.ct,.ac.cs').forEach(c=>c.classList.remove('ct','cs'));
+  }
+}
+document.getElementById('btn-draw').addEventListener('click',()=>setDrawMode(!drawMode));
+
+// ── Drag ─────────────────────────────────────────────────────────────────────
+function setupDrag(card){
+  const hdr=card.querySelector('.ach');
+  let dragging=false,ox=0,oy=0;
+
+  hdr.addEventListener('pointerdown',e=>{
+    if(drawMode) return; // no drag in draw mode
+    if(e.target.closest('.pt')) return;
+    e.preventDefault();
+    dragging=true; card.classList.add('drag-on');
+    card.style.zIndex=++zTop; card.setPointerCapture(e.pointerId);
+    const br=cvsR(),cr=card.getBoundingClientRect();
+    ox=e.clientX-cr.left; oy=e.clientY-cr.top;
+  });
+
+  card.addEventListener('pointermove',e=>{
+    if(!dragging) return;
+    const br=cvsR();
+    let x=Math.max(0,Math.min(e.clientX-br.left-ox,br.width-card.offsetWidth));
+    let y=Math.max(0,Math.min(e.clientY-br.top-oy,br.height-card.offsetHeight));
+    card.style.left=x+'px'; card.style.top=y+'px';
+    card.style.right=''; card.style.bottom='';
+    schedRender();
+  });
+
+  const end=e=>{
+    if(!dragging) return; dragging=false; card.classList.remove('drag-on');
+    try{card.releasePointerCapture(e.pointerId);}catch{} saveLocal();
+  };
+  card.addEventListener('pointerup',end);
+  card.addEventListener('lostpointercapture',end);
+}
+
+// ── Resize (SE corner ONLY — zero overlap with ports) ────────────────────────
+function setupResize(card){
+  const rz=card.querySelector('.rz');
+  let resizing=false,rs=null;
+
+  rz.addEventListener('pointerdown',e=>{
+    if(drawMode) return;
+    e.stopPropagation(); e.preventDefault();
+    resizing=true; rz.setPointerCapture(e.pointerId);
+    const cr=card.getBoundingClientRect();
+    rs={sx:e.clientX,sy:e.clientY,sw:cr.width,sh:cr.height};
+    card.style.zIndex=++zTop;
+  });
+
+  rz.addEventListener('pointermove',e=>{
+    if(!resizing||!rs) return;
+    card.style.width =Math.max(210,rs.sw+(e.clientX-rs.sx))+'px';
+    card.style.height=Math.max(170,rs.sh+(e.clientY-rs.sy))+'px';
+    schedRender();
+  });
+
+  const end=e=>{
+    if(!resizing) return; resizing=false; rs=null;
+    try{rz.releasePointerCapture(e.pointerId);}catch{} saveLocal();
+  };
+  rz.addEventListener('pointerup',end);
+  rz.addEventListener('lostpointercapture',end);
+}
+
+// ── Ports (ONLY active in draw mode) ─────────────────────────────────────────
+function setupPorts(card){
+  card.querySelectorAll('.pt').forEach(pt=>{
+    pt.addEventListener('pointerdown',e=>{
+      if(!drawMode) return;
+      e.stopPropagation(); e.preventDefault();
+      conn={fromId:card.id,fromSide:pt.dataset.s};
+      card.classList.add('cs');
+      lw.style.display='block';
+      lw.setAttribute('stroke',getAccent(card.id));
+      document.addEventListener('pointermove',onMove,{capture:true,passive:true});
+      document.addEventListener('pointerup',onEnd,{capture:true,once:true});
+    });
+  });
+}
+
+function onMove(e){
+  if(!conn) return;
+  const br=cvsR();
+  const p1=portPos(conn.fromId,conn.fromSide);
+  const p2={x:e.clientX-br.left,y:e.clientY-br.top};
+  const el=document.elementFromPoint(e.clientX,e.clientY);
+  const tc=el?.closest('.ac');
+  document.querySelectorAll('.ac.ct').forEach(c=>c.classList.remove('ct'));
+  if(tc&&tc.id!==conn.fromId) tc.classList.add('ct');
+  const s2=tc&&tc.id!==conn.fromId?bestSide(p1,tc):autoSide(p1,p2);
+  lw.setAttribute('d',bez(p1,conn.fromSide,p2,s2));
+}
+
+function onEnd(e){
+  document.removeEventListener('pointermove',onMove,{capture:true});
+  lw.style.display='none';
+  document.querySelectorAll('.ac.ct,.ac.cs').forEach(c=>c.classList.remove('ct','cs'));
+  if(!conn) return;
+  const el=document.elementFromPoint(e.clientX,e.clientY);
+  const tc=el?.closest('.ac');
+  const tp=el?.closest('.pt');
+  if(tc&&tc.id!==conn.fromId){
+    const toSide=tp?.dataset.s||bestSide(portPos(conn.fromId,conn.fromSide),tc);
+    conns.push({id:uid(),fi:conn.fromId,fs:conn.fromSide,ti:tc.id,ts:toSide,
+      col:getAccent(conn.fromId),lbl:'',bi:false});
+    schedRender(); saveLocal();
+  }
+  conn=null;
+}
+
+// ── Render wires ─────────────────────────────────────────────────────────────
+function schedRender(){
+  if(rafId) return;
+  rafId=requestAnimationFrame(()=>{ rafId=null; renderWires(); });
+}
+
+function renderWires(){
+  const NS='http://www.w3.org/2000/svg';
+  const frag=document.createDocumentFragment();
+
+  conns.forEach(c=>{
+    let p1,p2;
+    try{p1=portPos(c.fi,c.fs);p2=portPos(c.ti,c.ts);}catch{return;}
+
+    const col=getAccent(c.fi); // refresh colour on theme change
+    const g=document.createElementNS(NS,'g');
+    const path=document.createElementNS(NS,'path');
+    path.setAttribute('d',bez(p1,c.fs,p2,c.ts));
+    path.setAttribute('class','wire'+(selId===c.id?' sel':''));
+    path.setAttribute('stroke',col);
+    path.setAttribute('color',col);
+    path.setAttribute('marker-end','url(#arr)');
+    if(c.bi) path.setAttribute('marker-start','url(#arrs)');
+    path.style.pointerEvents='stroke';
+
+    path.addEventListener('click',ev=>{
+      ev.stopPropagation();
+      selId=selId===c.id?null:c.id;
+      document.getElementById('dh').classList.toggle('on',!!selId);
+      schedRender();
+    });
+    path.addEventListener('dblclick',ev=>{
+      ev.stopPropagation();
+      const v=prompt('Arrow label (empty to remove):',c.lbl||'');
+      if(v!==null){c.lbl=v.trim();saveLocal();schedRender();}
+    });
+    path.addEventListener('contextmenu',ev=>{
+      ev.preventDefault();ev.stopPropagation();
+      c.bi=!c.bi;schedRender();saveLocal();
+    });
+
+    if(c.lbl){
+      const mid=bezMid(p1,c.fs,p2,c.ts);
+      const tw=Math.max(24,c.lbl.length*6.8),pad=8,th=18;
+      const bg=document.createElementNS(NS,'rect');
+      bg.setAttribute('x',mid.x-tw/2-pad/2);bg.setAttribute('y',mid.y-th/2-2);
+      bg.setAttribute('width',tw+pad);bg.setAttribute('height',th);
+      bg.setAttribute('fill',`color-mix(in srgb,${col} 8%,var(--card,#fff))`);
+      bg.setAttribute('stroke',col);bg.setAttribute('stroke-width','0.7');
+      bg.setAttribute('rx','5');bg.setAttribute('ry','5');
+      const txt=document.createElementNS(NS,'text');
+      txt.setAttribute('x',mid.x);txt.setAttribute('y',mid.y+5);
+      txt.setAttribute('text-anchor','middle');txt.setAttribute('fill',col);
+      txt.setAttribute('font-size','11');txt.setAttribute('font-family',"'DM Sans',sans-serif");
+      txt.textContent=c.lbl;
+      g.appendChild(bg);g.appendChild(txt);
+    }
+    g.appendChild(path);frag.appendChild(g);
+  });
+
+  const defs=wires.querySelector('defs');
+  wires.replaceChildren(defs,lw,frag);
+}
+
+// ── Canvas click — deselect ───────────────────────────────────────────────────
+cvs.addEventListener('click',()=>{
+  if(selId){selId=null;document.getElementById('dh').classList.remove('on');schedRender();}
+});
+
+// ── Keyboard ──────────────────────────────────────────────────────────────────
+window.addEventListener('keydown',e=>{
+  if(['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) return;
+  if((e.key==='Delete'||e.key==='Backspace')&&selId){
+    conns=conns.filter(c=>c.id!==selId);selId=null;
+    document.getElementById('dh').classList.remove('on');
+    schedRender();saveLocal();
+  }
+  if(e.key==='Escape'){
+    if(conn){
+      conn=null;lw.style.display='none';
+      document.querySelectorAll('.ac.ct,.ac.cs').forEach(c=>c.classList.remove('ct','cs'));
+    }
+    if(drawMode) setDrawMode(false);
+  }
+  if(e.key.toLowerCase()==='d') setDrawMode(!drawMode);
+});
+
+// ── Theme ─────────────────────────────────────────────────────────────────────
+function applyTheme(t){
+  document.body.setAttribute('data-theme',t);
+  document.querySelectorAll('.td').forEach(d=>d.classList.toggle('on',d.dataset.t===t));
+  try{localStorage.setItem('fa_theme',t);}catch{}
+  schedRender();
+}
+document.querySelectorAll('.td').forEach(d=>d.addEventListener('click',()=>applyTheme(d.dataset.t)));
+
+// ── Save / Load ───────────────────────────────────────────────────────────────
+function saveLocal(){
+  const cards={};
+  document.querySelectorAll('.ac').forEach(el=>{
+    cards[el.id]={l:el.style.left,t:el.style.top,w:el.style.width,h:el.style.height,
+      txt:el.querySelector('.ac-ta')?.value||''};
+  });
+  const obj={
+    meta:{client:document.getElementById('ic').value,
+          date:document.getElementById('id').value,
+          therapist:document.getElementById('ith').value},
+    theme:document.body.getAttribute('data-theme'),
+    cards,conns
+  };
+  try{localStorage.setItem(SK,JSON.stringify(obj));}catch{}
+}
+
+function loadLocal(){
+  try{
+    const raw=localStorage.getItem(SK);
+    if(!raw) return toast('No saved session found');
+    const obj=JSON.parse(raw);
+    if(obj.meta){
+      document.getElementById('ic').value  =obj.meta.client||'';
+      document.getElementById('id').value  =obj.meta.date||'';
+      document.getElementById('ith').value =obj.meta.therapist||'';
+    }
+    if(obj.theme) applyTheme(obj.theme);
+    if(obj.cards){
+      Object.entries(obj.cards).forEach(([id,st])=>{
+        const el=document.getElementById(id);if(!el) return;
+        if(st.l) el.style.left=st.l; if(st.t) el.style.top=st.t;
+        if(st.w) el.style.width=st.w; if(st.h) el.style.height=st.h;
+        el.style.right='';el.style.bottom='';
+        const ta=el.querySelector('.ac-ta');if(ta) ta.value=st.txt||'';
+      });
+    }
+    if(Array.isArray(obj.conns)) conns=obj.conns;
+    schedRender();toast('Session loaded');
+  }catch{toast('Load failed');}
+}
+
+// ── Toast ─────────────────────────────────────────────────────────────────────
+function toast(msg){
+  const t=document.createElement('div');t.className='tst';t.textContent=msg;
+  document.body.appendChild(t);setTimeout(()=>t.remove(),1500);
+}
+
+// ── Toolbar bindings ─────────────────────────────────────────────────────────
+document.getElementById('brl').addEventListener('click',()=>{
+  if(confirm('Reset card positions and sizes to default?')){resetLayout();toast('Layout reset');}
+});
+document.getElementById('bca').addEventListener('click',()=>{
+  if(confirm('Remove all arrows?')){
+    conns=[];selId=null;document.getElementById('dh').classList.remove('on');
+    schedRender();saveLocal();toast('Arrows cleared');
+  }
+});
+document.getElementById('bs').addEventListener('click',()=>{saveLocal();toast('Saved');});
+document.getElementById('bl').addEventListener('click',loadLocal);
+document.getElementById('bp').addEventListener('click',()=>window.print());
+
+document.querySelectorAll('.ac-ta,#ic,#id,#ith')
+  .forEach(el=>el.addEventListener('input',()=>{saveLocal();schedRender();}));
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+document.querySelectorAll('.ac').forEach(c=>{ setupDrag(c); setupResize(c); setupPorts(c); });
+
+const di=document.getElementById('id');
+if(!di.value) di.valueAsDate=new Date();
+
+const savedTheme=localStorage.getItem('fa_theme')||'paper';
+applyTheme(savedTheme);
+resetLayout();
+
+const saved=localStorage.getItem(SK);
+if(saved){ try{const o=JSON.parse(saved);if(o.meta||o.cards)loadLocal();}catch{} }
+
+window.addEventListener('resize',schedRender);
+schedRender();
+
+})();
+</script>
+</body>
+</html>
